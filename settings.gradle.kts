@@ -8,4 +8,3 @@
  */
 
 rootProject.name = "schedule-gen"
-include("schedule-gen")
