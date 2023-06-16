@@ -8,4 +8,4 @@
  */
 
 rootProject.name = "schedule-gen"
-include("lib")
+include("schedule-gen")
