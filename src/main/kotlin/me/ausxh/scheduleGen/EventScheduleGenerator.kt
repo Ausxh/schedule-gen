@@ -41,7 +41,9 @@ class EventScheduleGenerator : ScheduleGenerator {
         for(i in 0 until eventGroup.size) {
             for(j in i+1 until eventGroup.size) {
 
-                val sameDays: Boolean = eventGroup[i].days.intersect(eventGroup[j].days).isNotEmpty()
+                // Check if the days intersect and handle case where either set of days is null
+                val sameDays: Boolean = eventGroup[i].days?.intersect(eventGroup[j].days ?: emptySet())?.isNotEmpty() ?: false
+
                 val startConflict: Boolean = eventGroup[i].startTime.compareTo(eventGroup[j].endTime) <= 0 && eventGroup[i].endTime.compareTo(eventGroup[j].endTime) >= 0
                 val endConflict: Boolean = eventGroup[i].startTime.compareTo(eventGroup[j].startTime) <= 0 && eventGroup[i].endTime.compareTo(eventGroup[j].startTime) >= 0
 
