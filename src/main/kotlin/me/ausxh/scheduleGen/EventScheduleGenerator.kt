@@ -4,8 +4,8 @@ import java.time.LocalTime
 
 class EventScheduleGenerator : ScheduleGenerator {
     
-    override fun generate(eventGroups: List<List<Event>>) : MutableList<MutableList<Event>> {
-        var groups = mutableListOf<MutableList<Event>>()
+    override fun generate(eventGroups: List<List<Event>>) : List<List<Int>> {
+        var groups = mutableListOf<MutableList<Int>>()
         val eSize = eventGroups.size
 
         var numPerm = IntArray(eSize)
@@ -17,19 +17,22 @@ class EventScheduleGenerator : ScheduleGenerator {
         }
 
         val groupToCheck = mutableListOf<Event>()
+        val groupIndicies = mutableListOf<Int>()
         val totalPerm = numPerm[0] * eventGroups[0].size
         for(i in 0 until totalPerm) {
             var tempValue = i
 
             for(j in 0 until eSize) {
                 groupToCheck.add(eventGroups[j][tempValue / numPerm[j]])
+                groupIndicies.add(tempValue / numPerm[j])
                 tempValue %= numPerm[j]
             }
 
             if (validate(groupToCheck))
-                groups.add(groupToCheck.toMutableList())
+                groups.add(groupIndicies.toMutableList())
            
             groupToCheck.clear()
+            groupIndicies.clear()
 
         }
         
