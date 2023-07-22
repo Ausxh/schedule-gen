@@ -47,8 +47,9 @@ class EventScheduleGenerator : ScheduleGenerator {
                 // Check if the days intersect and handle case where either set of days is null
                 val sameDays: Boolean = eventGroup[i].days?.intersect(eventGroup[j].days ?: emptySet())?.isNotEmpty() ?: false
 
-                val startConflict: Boolean = eventGroup[i].startTime.compareTo(eventGroup[j].endTime) <= 0 && eventGroup[i].endTime.compareTo(eventGroup[j].endTime) >= 0
-                val endConflict: Boolean = eventGroup[i].startTime.compareTo(eventGroup[j].startTime) <= 0 && eventGroup[i].endTime.compareTo(eventGroup[j].startTime) >= 0
+                val nullTime: Boolean = eventGroup[i].startTime == null || eventGroup[j].endTime == null || eventGroup[j].startTime == null || eventGroup[j].endTime == null
+                val startConflict: Boolean = !nullTime && (eventGroup[i].startTime?.compareTo(eventGroup[j].endTime) ?: -1 <= 0 && eventGroup[i].endTime?.compareTo(eventGroup[j].endTime) ?: 1 >= 0)
+                val endConflict: Boolean = !nullTime && (eventGroup[i].startTime?.compareTo(eventGroup[j].startTime) ?: -1 <= 0 && eventGroup[i].endTime?.compareTo(eventGroup[j].startTime) ?: 1 >= 0)
 
                 if (sameDays && (startConflict || endConflict)) {
                     return false
